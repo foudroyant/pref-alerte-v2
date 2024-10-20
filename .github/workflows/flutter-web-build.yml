@@ -1,0 +1,32 @@
+name: Flutter Web Build
+
+on:
+  push:
+    branches:
+      - main  # Ou la branche que tu veux suivre
+  workflow_dispatch:  # Permet de lancer manuellement
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: "stable"
+
+    - name: Install Flutter dependencies
+      run: flutter pub get
+
+    - name: Build for web
+      run: flutter build web --release
+
+    - name: Upload Web Build as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: web-build
+        path: build/web
